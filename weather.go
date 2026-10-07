@@ -122,15 +122,29 @@ func currentweather(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func main() {
+func enableCORS(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		//Hardcoded Access-Control-Allow-Origin value. Maybe fix this later.
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+		w.Header().Set("Access-Control-Allow-Methods", "GET")
 
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+func main() {
 	port := os.Getenv("PORT")
 	addr := ":" + port
 
-	http.HandleFunc("/currentweather", currentweather)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/currentweather", currentweather)
 
 	fmt.Println("Server listening port", port)
-	if err := http.ListenAndServe(addr, nil); err != nil {
+	if err := http.ListenAndServe(addr, enableCORS(mux)); err != nil {
 		log.Fatalln("Server failed to start:", err)
 	}
 }
