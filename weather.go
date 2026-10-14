@@ -24,6 +24,16 @@ type WeatherResponse struct {
 	}
 }
 
+// Struct for client response
+type ClientResponse struct {
+	City        string  `json:"City"`
+	Temperature float64 `json:"Temperature"`
+	Humidity    int     `json:"Humidity"`
+	Condition   string  `json:"Description"`
+	Icon        string  `json:"Icon"`
+}
+
+// String function for WeatherResponse
 func (w *WeatherResponse) String() string {
 	return fmt.Sprintf("City: %s\nTemp: %.1f °C\nHumidity: %d %%\nConditoins: %s\nIcon: %s\n",
 		w.Name,
@@ -32,14 +42,6 @@ func (w *WeatherResponse) String() string {
 		w.Weather[0].Description,
 		w.Weather[0].Icon,
 	)
-}
-
-type ClientResponse struct {
-	City        string  `json:"city"`
-	Temperature float64 `json:"temperature_celsius"`
-	Humidity    int     `json:"humidity_percent"`
-	Condition   string  `json:"description"`
-	Icon        string  `json:"icon"`
 }
 
 func UrlBuilder() (string, error) {
@@ -89,6 +91,7 @@ func fetchWeatherData() (*WeatherResponse, error) {
 	return &data, nil
 }
 
+// Handle requests from the client
 func currentweather(w http.ResponseWriter, req *http.Request) {
 
 	//Check if the req method == GET
