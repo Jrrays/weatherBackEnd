@@ -9,7 +9,8 @@ OpenWeatherMap API key
     "city": Oulu  
     "temperature_celsius":  
     "humidity_percent":  
-    "description":  
+    "description":
+    "icon":
 }
 
 ## TODO

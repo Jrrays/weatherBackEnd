@@ -20,15 +20,18 @@ type WeatherResponse struct {
 	} `json:"main"`
 	Weather []struct {
 		Description string `json:"description"`
+		Icon        string `json:"icon"`
 	}
 }
 
 func (w *WeatherResponse) String() string {
-	return fmt.Sprintf("City: %s\nTemp: %.1f °C\nHumidity: %d %%\nConditoins: %s\n",
+	return fmt.Sprintf("City: %s\nTemp: %.1f °C\nHumidity: %d %%\nConditoins: %s\nIcon: %s\n",
 		w.Name,
 		w.Main.Temp,
 		w.Main.Humidity,
-		w.Weather[0].Description)
+		w.Weather[0].Description,
+		w.Weather[0].Icon,
+	)
 }
 
 type ClientResponse struct {
@@ -36,6 +39,7 @@ type ClientResponse struct {
 	Temperature float64 `json:"temperature_celsius"`
 	Humidity    int     `json:"humidity_percent"`
 	Condition   string  `json:"description"`
+	Icon        string  `json:"icon"`
 }
 
 func UrlBuilder() (string, error) {
@@ -103,8 +107,10 @@ func currentweather(w http.ResponseWriter, req *http.Request) {
 
 	//Format the weather data
 	cond := "unknown"
+	icon := "unknown"
 	if len(upstreamData.Weather) > 0 {
 		cond = upstreamData.Weather[0].Description
+		icon = upstreamData.Weather[0].Icon
 	}
 
 	clientData := ClientResponse{
@@ -112,6 +118,7 @@ func currentweather(w http.ResponseWriter, req *http.Request) {
 		Temperature: upstreamData.Main.Temp,
 		Humidity:    upstreamData.Main.Humidity,
 		Condition:   cond,
+		Icon:        icon,
 	}
 
 	//Set headers and return JSON
