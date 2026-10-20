@@ -6,11 +6,11 @@ OpenWeatherMap API key
 
 ## Response format
 {  
-    "city": Oulu  
-    "temperature_celsius":  
-    "humidity_percent":  
-    "description":
-    "icon":  
+    "City":  
+    "Temperature":  
+    "Humidity":  
+    "Description":  
+    "Icon":  
 }
 
 ## TODO
