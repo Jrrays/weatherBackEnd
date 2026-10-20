@@ -44,7 +44,7 @@ func (w *WeatherResponse) String() string {
 	)
 }
 
-func UrlBuilder() (string, error) {
+func UrlBuilder(lat, lon string) (string, error) {
 	u := &url.URL{
 		Scheme: "https",
 		Host:   "api.openweathermap.org",
@@ -53,8 +53,8 @@ func UrlBuilder() (string, error) {
 	u = u.JoinPath("data", "2.5", "weather")
 
 	q := u.Query()
-	q.Set("lat", os.Getenv("LAT"))
-	q.Set("lon", os.Getenv("LON"))
+	q.Set("lat", lat)
+	q.Set("lon", lon)
 	q.Set("appid", os.Getenv("API"))
 	q.Set("units", os.Getenv("UNITS"))
 	u.RawQuery = q.Encode()
@@ -62,9 +62,9 @@ func UrlBuilder() (string, error) {
 	return u.String(), nil
 }
 
-func fetchWeatherData() (*WeatherResponse, error) {
+func fetchWeatherData(lat, lon string) (*WeatherResponse, error) {
 	//Build the URL
-	apiURL, err := UrlBuilder()
+	apiURL, err := UrlBuilder(lat, lon)
 	if err != nil {
 		return nil, err
 	}
@@ -100,8 +100,13 @@ func currentweather(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	//Extract location from query parameters
+	params := req.URL.Query()
+	lat := params.Get("lat")
+	lon := params.Get("lon")
+
 	//Fetch upstream data
-	upstreamData, err := fetchWeatherData()
+	upstreamData, err := fetchWeatherData(lat, lon)
 	if err != nil {
 		log.Println("Error fetching weather:", err)
 		http.Error(w, "Failed to retrieve weather data", http.StatusInternalServerError)
