@@ -10,7 +10,7 @@ OpenWeatherMap API key
     "temperature_celsius":  
     "humidity_percent":  
     "description":
-    "icon":
+    "icon":  
 }
 
 ## TODO
