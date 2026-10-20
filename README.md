@@ -18,6 +18,7 @@ OpenWeatherMap API key
 - Fetch weather data based on user's location
     - User sends their location to the backend, server fetches user's local data
 - Fix hardcoded allowed CORS values
+- Enable HTTPS connection
 - Add new features:
     - Air pollution data (OpenWeatherMap)
     - Forecasts (OpenWeatherMap)
