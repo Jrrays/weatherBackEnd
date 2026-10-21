@@ -12,12 +12,17 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
+// Data from OpenWeatherMap is stored in this struct
 type WeatherResponse struct {
 	Name string `json:"name"`
 	Main struct {
-		Temp     float64 `json:"temp"`
-		Humidity int     `json:"humidity"`
+		Temp      float64 `json:"temp"`
+		FeelsLike float64 `json:"feels_like"`
+		Humidity  int     `json:"humidity"`
 	} `json:"main"`
+	Wind struct {
+		WindSpeed float64 `json:"speed"`
+	} `json:"wind"`
 	Weather []struct {
 		Description string `json:"description"`
 		Icon        string `json:"icon"`
@@ -28,17 +33,21 @@ type WeatherResponse struct {
 type ClientResponse struct {
 	City        string  `json:"City"`
 	Temperature float64 `json:"Temperature"`
+	FeelsLike   float64 `json:"FeelsLike"`
 	Humidity    int     `json:"Humidity"`
+	WindSpeed   float64 `json:"WindSpeed"`
 	Condition   string  `json:"Description"`
 	Icon        string  `json:"Icon"`
 }
 
-// String function for WeatherResponse
+// String function for WeatherResponse to client
 func (w *WeatherResponse) String() string {
-	return fmt.Sprintf("City: %s\nTemp: %.1f °C\nHumidity: %d %%\nConditoins: %s\nIcon: %s\n",
+	return fmt.Sprintf("City: %s\nTemp: %.1f °C\nFeels Like: %.1f°C\nHumidity: %d %%\nWindSpeed: %f m/s\nConditoins: %s\nIcon: %s\n",
 		w.Name,
 		w.Main.Temp,
+		w.Main.FeelsLike,
 		w.Main.Humidity,
+		w.Wind.WindSpeed,
 		w.Weather[0].Description,
 		w.Weather[0].Icon,
 	)
@@ -124,7 +133,9 @@ func currentweather(w http.ResponseWriter, req *http.Request) {
 	clientData := ClientResponse{
 		City:        upstreamData.Name,
 		Temperature: upstreamData.Main.Temp,
+		FeelsLike:   upstreamData.Main.FeelsLike,
 		Humidity:    upstreamData.Main.Humidity,
+		WindSpeed:   upstreamData.Wind.WindSpeed,
 		Condition:   cond,
 		Icon:        icon,
 	}
