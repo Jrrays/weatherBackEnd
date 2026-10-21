@@ -7,8 +7,10 @@ OpenWeatherMap API key
 ## Response format
 {  
     "City":  
-    "Temperature":  
-    "Humidity":  
+    "Temperature" (C):  
+    "Feels Like" (C):  
+    "Humidity": (%)  
+    "WindSpeed" (m/s)  
     "Description":  
     "Icon":  
 }
@@ -19,6 +21,7 @@ OpenWeatherMap API key
     - User sends their location to the backend, server fetches user's local data
 - Fix hardcoded allowed CORS values
 - Enable HTTPS connection
+- Add modularity/divide in packages
 - Add new features:
     - Air pollution data (OpenWeatherMap)
     - Forecasts (OpenWeatherMap)
