@@ -1,5 +1,5 @@
 # Weather Backend
-This application acts as a bacekend for the Weather App. It fetches weather data from OpenWeatherMap, and passes it on the user frontend.
+This application acts as a bacekend for the [Jrrays/weatherFrontEnd](https://github.com/Jrrays/weatherFrontEnd). It fetches weather data from OpenWeatherMap, and passes it on the user frontend.
 
 ## Requirments
 OpenWeatherMap API key
