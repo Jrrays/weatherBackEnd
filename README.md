@@ -3,8 +3,10 @@ This application acts as a bacekend for the [Jrrays/weatherFrontEnd](https://git
 
 ## Requirments
 OpenWeatherMap API key
+FreeAstroAPI API key
 
-## Response format
+## Response formats
+### Weather
 {  
     "City":  
     "Temperature" (C):  
@@ -13,6 +15,16 @@ OpenWeatherMap API key
     "WindSpeed" (m/s)  
     "Description":  
     "Icon":  
+}
+### Moon phase
+{  
+    "Phase name":  
+    "Phase Angle" (degree)  
+    "Age": (days)  
+    "Distance"  (km)  
+    "svg":  (Phase visual svg data)  
+    "Tradotional name":  (e.g., Harvest Moon)  
+    "Applies To":  (Date of the next full moon)  
 }
 
 ## TODO
