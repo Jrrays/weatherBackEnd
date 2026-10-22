@@ -61,7 +61,7 @@ func urlBuilder(lat, lon string) (string, error) {
 	q := u.Query()
 	q.Set("lat", lat)
 	q.Set("lon", lon)
-	q.Set("appid", os.Getenv("API"))
+	q.Set("appid", os.Getenv("OWM_API"))
 	q.Set("units", os.Getenv("UNITS"))
 	u.RawQuery = q.Encode()
 

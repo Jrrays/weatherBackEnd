@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"weatherBackEnd/moonutils"
 	"weatherBackEnd/weatherutils"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -28,7 +29,7 @@ func currentweather(w http.ResponseWriter, req *http.Request) {
 	//Fetch upstream data
 	upstreamData, err := weatherutils.FetchWeatherData(lat, lon)
 	if err != nil {
-		log.Println("Error fetching weather:", err)
+		log.Println("Error fetching weather data:", err)
 		http.Error(w, "Failed to retrieve weather data", http.StatusInternalServerError)
 		return
 	}
@@ -53,9 +54,48 @@ func currentweather(w http.ResponseWriter, req *http.Request) {
 
 	//Set headers and return JSON
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	//w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(clientData); err != nil {
 		log.Println("Error while encoding response:", err)
+	}
+}
+
+// Handler for moon  requests
+func moonPhaseData(w http.ResponseWriter, req *http.Request) {
+	//Check the method
+	if req.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	//Extract location from query parameters
+	params := req.URL.Query()
+	lat := params.Get("lat")
+	lon := params.Get("lon")
+
+	//Fetch upstream data
+	upstreamData, err := moonutils.FetchMoonData(lat, lon)
+	if err != nil {
+		log.Println("Error while fetching moon data:", err)
+		http.Error(w, "Failed to retrieve moon data", http.StatusInternalServerError)
+		return
+	}
+
+	clientData := moonutils.ClientResponse{
+		PhaseName: upstreamData.Phase.PhaseName,
+		Angle:     upstreamData.Phase.Angle,
+		Age:       upstreamData.Phase.Age,
+		Distance:  upstreamData.Phase.Distance,
+		Svg:       upstreamData.Visual.Svg,
+		Name:      upstreamData.Traditional.Name,
+		FullMoon:  upstreamData.Traditional.FullMoon,
+	}
+
+	//Set headers and return the JSON
+	w.Header().Set("Content-Type", "application/json")
+	//w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(clientData); err != nil {
+		log.Println("Error while encoding moon response", err)
 	}
 }
 
@@ -79,6 +119,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/currentweather", currentweather)
+	mux.HandleFunc("/moonphase", moonPhaseData)
 
 	fmt.Println("Server listening port", port)
 	if err := http.ListenAndServe(addr, enableCORS(mux)); err != nil {
