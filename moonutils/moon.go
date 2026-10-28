@@ -19,7 +19,7 @@ type moonResponse struct {
 	} `json:"phase"`
 	Visual struct {
 		Svg string `json:"svg"`
-	} `json:"visual"`
+	} `json:"moon_visual"`
 	Traditional struct {
 		Name     string    `json:"name"`
 		FullMoon time.Time `json:"applies_to_full_moon_at"`
