@@ -81,14 +81,22 @@ func moonPhaseData(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	nextPhases := []moonutils.UpcomingPhase{
+		{Phase: "New Moon", Time: upstreamData.NextPhases.NewMoon},
+		{Phase: "First Quarter", Time: upstreamData.NextPhases.FirstQuarter},
+		{Phase: "Full Moon", Time: upstreamData.Traditional.FullMoon},
+		{Phase: "Last Quarter", Time: upstreamData.NextPhases.LastQuarter},
+	}
+
 	clientData := moonutils.ClientResponse{
-		PhaseName: upstreamData.Phase.PhaseName,
-		Angle:     upstreamData.Phase.Angle,
-		Age:       upstreamData.Phase.Age,
-		Distance:  upstreamData.Phase.Distance,
-		Svg:       upstreamData.Visual.Svg,
-		Name:      upstreamData.Traditional.Name,
-		FullMoon:  upstreamData.Traditional.FullMoon,
+		PhaseName:  upstreamData.Phase.PhaseName,
+		Angle:      upstreamData.Phase.Angle,
+		Age:        upstreamData.Phase.Age,
+		Distance:   upstreamData.Phase.Distance,
+		Svg:        upstreamData.Visual.Svg,
+		Name:       upstreamData.Traditional.Name,
+		FullMoon:   upstreamData.Traditional.FullMoon,
+		NextPhases: nextPhases,
 	}
 
 	//Set headers and return the JSON

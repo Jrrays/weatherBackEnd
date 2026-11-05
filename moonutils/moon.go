@@ -24,16 +24,28 @@ type moonResponse struct {
 		Name     string    `json:"name"`
 		FullMoon time.Time `json:"applies_to_full_moon_at"`
 	} `json:"traditional_moon"`
+	NextPhases struct {
+		NewMoon      time.Time `json:"new_moon"`
+		FirstQuarter time.Time `json:"first_quarter"`
+		FullMoon     time.Time `json:"full_moon"`
+		LastQuarter  time.Time `json:"last_quarter"`
+	} `json:"next_phases"`
+}
+
+type UpcomingPhase struct {
+	Phase string    `json:"phase"`
+	Time  time.Time `json:"time"`
 }
 
 type ClientResponse struct {
-	PhaseName string    `json:"PhaseName"`
-	Angle     float64   `json:"PhaseAngle"`
-	Age       float64   `json:"Age"`
-	Distance  float64   `json:"Distance"`
-	Svg       string    `json:"Svg"`
-	Name      string    `json:"TraditionalName"`
-	FullMoon  time.Time `json:"AppliesTo"`
+	PhaseName  string          `json:"PhaseName"`
+	Angle      float64         `json:"PhaseAngle"`
+	Age        float64         `json:"Age"`
+	Distance   float64         `json:"Distance"`
+	Svg        string          `json:"Svg"`
+	Name       string          `json:"TraditionalName"`
+	FullMoon   time.Time       `json:"AppliesTo"`
+	NextPhases []UpcomingPhase `json:"NextPhases"`
 }
 
 func urlBuilder(lat, lon string) (string, error) {
