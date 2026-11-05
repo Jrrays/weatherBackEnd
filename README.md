@@ -25,6 +25,12 @@ FreeAstroAPI API key
     "svg":  (Phase visual svg data)  
     "Tradotional name":  (e.g., Harvest Moon)  
     "Applies To":  (Date of the next full moon)  
+    "NextPhases": [
+        "New Moon":  
+        "First Quarter:"  
+        "Full Moon":  
+        "Last Quarter":  
+    ]
 }
 
 ## TODO
